@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class BasicMovement : MonoBehaviour
 {
-    [SerializeField] private InputManager inputManager;
     [SerializeField] private float speed;
 
-
-    private void Update()
+    private void Awake()
     {
-        transform.position += new Vector3(inputManager.x, 0, inputManager.z) * speed*Time.deltaTime;
+        InputManager.OnInputGiven += MoveHorizontal;
     }
+
+    public void MoveHorizontal(float delta)
+    {
+        transform.position += new Vector3(delta, 0, 0);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x + delta, -3, 3), transform.position.y, transform.position.z);
+
+    }
+
 }

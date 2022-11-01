@@ -1,38 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public static Action<float> OnInputGiven;
     public float x;
     public float z;
-    
-    
+    public Vector2 inputPos;
+    public float delta;
+
+
     private void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetMouseButtonDown(0))
         {
-            z = 1;
+            inputPos = Input.mousePosition;
         }
-        else if (Input.GetKey(KeyCode.S))
+        if (Input.GetMouseButton(0))
         {
-            z = -1;
+            Vector2 newPos = Input.mousePosition;
+            delta = newPos.x - inputPos.x;
+            inputPos = newPos;
+            OnInputGiven.Invoke(delta*Time.deltaTime);
+
         }
-        else
+        if (Input.GetMouseButtonUp(0))
         {
-            z = 0;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            x = -1;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            x = 1;
-        }
-        else
-        {
-            x = 0;
+
         }
     }
     

@@ -14,6 +14,7 @@ public class Loops : MonoBehaviour
             Debug.Log(i);
             i++;
         }
+
     }
 
     // Update is called once per frame
