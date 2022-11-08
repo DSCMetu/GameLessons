@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1597d0baf2655c499ce099fc3a52439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
+  pathFollower: {fileID: 8390105237038470336}
+  eventTriggerController: {fileID: 11400000, guid: 89c83fa5212624745ae16dbc525cee16,
+    type: 2}
 --- !u!114 &8390105237038470336
 MonoBehaviour:
   m_ObjectHideFlags: 0
