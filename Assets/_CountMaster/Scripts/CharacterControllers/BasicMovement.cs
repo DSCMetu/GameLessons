@@ -15,7 +15,7 @@ public class BasicMovement : MonoBehaviour
     public void MoveHorizontal(float delta)
     {
         Vector3 pos = transform.position;
-        transform.localPosition = new Vector3(Mathf.Clamp(pos.x + delta, -3, 3), pos.y, pos.z);
+        transform.localPosition = new Vector3(Mathf.Clamp(pos.x + delta*speed, -3, 3), pos.y, pos.z);
     }
 
 }

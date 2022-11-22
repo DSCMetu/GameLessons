@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CharacterBody : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private NavMeshAgent _nm;
+
+
+    private void Awake()
     {
-        
+        _nm = GetComponent<NavMeshAgent>();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void FixedUpdate()
     {
-        
+        _nm.SetDestination(transform.parent.position);
     }
 }
