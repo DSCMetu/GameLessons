@@ -8,6 +8,7 @@ public class CharacterBody : MonoBehaviour
 {
     private NavMeshAgent _nm;
 
+    public Action<CharacterBody> onCharacterDie;
 
     private void Awake()
     {
@@ -18,5 +19,21 @@ public class CharacterBody : MonoBehaviour
     private void FixedUpdate()
     {
         _nm.SetDestination(transform.parent.position);
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IObstacle a = other.GetComponent<IObstacle>();
+        if (a != null)
+        {
+            OnObstacleTrigger();
+        }
+    }
+
+    private void OnObstacleTrigger()
+    {
+        onCharacterDie.Invoke(this);
+        Destroy(gameObject);
     }
 }

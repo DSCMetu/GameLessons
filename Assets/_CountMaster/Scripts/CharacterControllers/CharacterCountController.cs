@@ -1,12 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterCountController : MonoBehaviour
 {
-    [SerializeField] private CharacterBody characterPrefab;
+    private CharacterCreator _creator;
+    private CharacterRemover _remover;
     [SerializeField] private List<CharacterBody> characterBodies = new List<CharacterBody>();
 
+
+    private void Awake()
+    {
+        _creator = GetComponent<CharacterCreator>();
+        _remover = GetComponent<CharacterRemover>();
+    }
+
+    private void Start()
+    {
+        ChangeAmount(1);
+    }
+
+
+    public void SetMultiply(float multiplyAmount)
+    {
+        int targetCount = (int)(characterBodies.Count * multiplyAmount);
+        ChangeAmount(targetCount - characterBodies.Count);
+    }
+    
 
     public void ChangeAmount(int amount)
     {
@@ -18,33 +39,25 @@ public class CharacterCountController : MonoBehaviour
         {
             for (int i = 0; i < amount; i++)
             {
-                InstantiateCharacter();
+                CharacterBody c = _creator.InstantiateCharacter();
+                c.onCharacterDie += CharacterDied;
+                characterBodies.Add(c);
             }
         }
     }
 
-    private void InstantiateCharacter()
+    private void CharacterDied(CharacterBody obj)
     {
-        CharacterBody c = Instantiate(characterPrefab, transform.position, Quaternion.identity);
-        SetCharacterParentToThis(c.transform);
-        SetRandomPosToCharacter(c.transform);
-        characterBodies.Add(c);
+        if (characterBodies.Contains(obj))
+        {
+            characterBodies.Remove(obj);
+        }
     }
 
-    private void SetCharacterParentToThis(Transform character)
-    {
-        character.SetParent(transform);
-    }
-
-    private void SetRandomPosToCharacter(Transform character)
-    {
-        Vector3 randomPos = new Vector3(Random.Range(0f, 2f), 0, Random.Range(0f, 2f));
-        character.localPosition += randomPos;
-    }
 
     private void SetDecrease(int amount)
     {
-        if (Mathf.Abs(amount) > characterBodies.Count)
+        if (Mathf.Abs(amount) >= characterBodies.Count)
         { 
             Debug.LogError("Hata Burayı kodlamamışsın");
             return;
@@ -57,15 +70,11 @@ public class CharacterCountController : MonoBehaviour
 
     private void RemoveCharacter()
     {
-        characterBodies[0].gameObject.SetActive(false);
+        _remover.RemoveCharacter(characterBodies[0]);
         characterBodies.RemoveAt(0);
     }
 
-    public void SetMultiply(float multiplyAmount)
-    {
-        int targetCount = (int)(characterBodies.Count * multiplyAmount);
-        ChangeAmount(targetCount - characterBodies.Count);
-    }
+   
     
     
     
