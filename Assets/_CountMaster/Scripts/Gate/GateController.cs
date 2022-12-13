@@ -9,6 +9,7 @@ public class GateController : MonoBehaviour
     [SerializeField] private float multiplyAmount;
     private void OnTriggerEnter(Collider other)
     {
+        gameObject.GetComponent<BoxCollider>().enabled = false;
         CharacterCountController c = other.GetComponent<CharacterCountController>();
         if (c)
         {
